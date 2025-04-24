@@ -121,3 +121,10 @@ latency average = 14.410 ms
 initial connection time = 48.247 ms
 tps = 693.942353 (without initial connection time)
 ```
+
+### My setup
+
+Test cases were run on my local machine with the following specs:
+
+- 32GB memory
+- 12 CPU cores
