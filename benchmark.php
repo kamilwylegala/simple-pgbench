@@ -82,5 +82,15 @@ foreach ($projectIds as $projectId) {
         );
     }
 
+    // Aggregate by project_id, metrics_name, take last value for each group
+    echo "Aggregate by project_id, metrics_name, take last value for each group\n";
+    for ($i = 0; $i < $iterations; $i++) {
+        measureTime(
+            fn () => $pdo->prepare(
+                'select project_id, name, value from benchmark_data where project_id = :projectId and created_at = (select max(created_at) from benchmark_data where project_id = :projectId group by project_id, name) group by project_id, name'
+            )->execute([':projectId' => $projectId])
+        );
+    }
+
     echo "\n";
 }
