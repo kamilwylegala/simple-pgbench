@@ -36,11 +36,13 @@ Or `pgbench` just makes the DB crash with "no space left on disk".
 
 ## Test cases
 
+Before each case, run: `./restore-db.sh` to restore the database to a clean state.
+
 ### Case 1
 
 Aggregating all data aggregated by `project_id`, `name` and having a sum:
 ```
-pgbench -j 3 -c 10 -T 30 -f aggregate-all-for-project.sql -h localhost -p 5432 -U benchmark_user -d benchmark_db
+pgbench -j 3 -c 10 -T 30 -f sum-all-for-project.sql -h localhost -p 5432 -U benchmark_user -d benchmark_db
 ```
 
 Results:
