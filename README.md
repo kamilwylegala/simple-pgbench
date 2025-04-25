@@ -36,7 +36,7 @@ Or `pgbench` just makes the DB crash with "no space left on disk".
 
 ## Test cases
 
-Before each case, run: `./restore-db.sh` to restore the database to a clean state.
+Before each case, run: `./restore-db.sh` to restore the database to a clean state. After that wait a 1 minute.
 
 ### Case 1
 
@@ -45,18 +45,32 @@ Aggregating all data aggregated by `project_id`, `name` and having a sum:
 pgbench -j 3 -c 10 -T 30 -f sum-all-for-project.sql -h localhost -p 5432 -U benchmark_user -d benchmark_db
 ```
 
-Results:
+Running right after restore:
 ```
-transaction type: aggregate-all-for-project.sql
+transaction type: sum-all-for-project.sql
 scaling factor: 1
 query mode: simple
 number of clients: 10
 number of threads: 3
 duration: 30 s
-number of transactions actually processed: 8345
-latency average = 35.931 ms
-initial connection time = 57.114 ms
-tps = 278.310201 (without initial connection time)
+number of transactions actually processed: 430
+latency average = 707.501 ms
+initial connection time = 57.616 ms
+tps = 14.134263 (without initial connection time)
+```
+
+After 1 minute:
+```
+transaction type: sum-all-for-project.sql
+scaling factor: 1
+query mode: simple
+number of clients: 10
+number of threads: 3
+duration: 30 s
+number of transactions actually processed: 11964
+latency average = 25.047 ms
+initial connection time = 53.365 ms
+tps = 399.251114 (without initial connection time)
 ```
 
 
@@ -67,7 +81,7 @@ Taking latest inserted value for single `project_id` and each `name`:
 pgbench -j 3 -c 10 -T 30 -f last-all-for-project.sql -h localhost -p 5432 -U benchmark_user -d benchmark_db
 ```
 
-Results:
+After restore:
 ```
 transaction type: last-all-for-project.sql
 scaling factor: 1
@@ -75,12 +89,25 @@ query mode: simple
 number of clients: 10
 number of threads: 3
 duration: 30 s
-number of transactions actually processed: 3333
-latency average = 90.102 ms
-initial connection time = 53.710 ms
-tps = 110.985718 (without initial connection time)
+number of transactions actually processed: 300
+latency average = 1018.109 ms
+initial connection time = 54.961 ms
+tps = 9.822129 (without initial connection time)
 ```
 
+After 1 minute:
+```
+transaction type: last-all-for-project.sql
+scaling factor: 1
+query mode: simple
+number of clients: 10
+number of threads: 3
+duration: 30 s
+number of transactions actually processed: 3510
+latency average = 85.532 ms
+initial connection time = 47.438 ms
+tps = 116.914683 (without initial connection time)
+```
 
 ### Case 3
 
@@ -89,7 +116,7 @@ Taking latest inserted value but query is **limited** to specific month:
 pgbench -j 3 -c 10 -T 30 -f last-month-for-project.sql -h localhost -p 5432 -U benchmark_user -d benchmark_db
 ```
 
-Results:
+After restore:
 ```
 transaction type: last-month-for-project.sql
 scaling factor: 1
@@ -97,10 +124,24 @@ query mode: simple
 number of clients: 10
 number of threads: 3
 duration: 30 s
-number of transactions actually processed: 4123
-latency average = 72.778 ms
-initial connection time = 59.622 ms
-tps = 137.405087 (without initial connection time)
+number of transactions actually processed: 1357
+latency average = 222.301 ms
+initial connection time = 52.788 ms
+tps = 44.984093 (without initial connection time
+```
+
+After 1 minute:
+```
+transaction type: last-month-for-project.sql
+scaling factor: 1
+query mode: simple
+number of clients: 10
+number of threads: 3
+duration: 30 s
+number of transactions actually processed: 4613
+latency average = 65.089 ms
+initial connection time = 49.777 ms
+tps = 153.636905 (without initial connection time)
 ```
 
 ### Case 4
@@ -110,7 +151,7 @@ Sum all `name` fields, limited to specific month:
 pgbench -j 3 -c 10 -T 30 -f sum-month-for-project.sql -h localhost -p 5432 -U benchmark_user -d benchmark_db
 ```
 
-Results:
+After restore:
 ```
 transaction type: sum-month-for-project.sql
 scaling factor: 1
@@ -118,10 +159,24 @@ query mode: simple
 number of clients: 10
 number of threads: 3
 duration: 30 s
-number of transactions actually processed: 20793
-latency average = 14.410 ms
-initial connection time = 48.247 ms
-tps = 693.942353 (without initial connection time)
+number of transactions actually processed: 1750
+latency average = 171.628 ms
+initial connection time = 55.909 ms
+tps = 58.265664 (without initial connection time)
+```
+
+After 1 minute:
+```
+transaction type: sum-month-for-project.sql
+scaling factor: 1
+query mode: simple
+number of clients: 10
+number of threads: 3
+duration: 30 s
+number of transactions actually processed: 24047
+latency average = 12.456 ms
+initial connection time = 54.127 ms
+tps = 802.812283 (without initial connection time)
 ```
 
 ### My setup
